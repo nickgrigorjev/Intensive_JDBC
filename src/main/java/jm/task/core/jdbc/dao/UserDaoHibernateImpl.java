@@ -8,13 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
-    public UserDaoHibernateImpl() {
-
-    }
-
-    @Override
-    public void createUsersTable() {
-        String CREATE_TABLE = """
+    private static final String CREATE_TABLE = """
                 CREATE TABLE IF NOT EXISTS users
                 (
                     id SERIAL PRIMARY KEY,
@@ -23,6 +17,9 @@ public class UserDaoHibernateImpl implements UserDao {
                     age SMALLINT CHECK (age > 0)
                 )
                 """;
+
+    @Override
+    public void createUsersTable() {
         try (Session session = Util.connectionOpenHibernate()) {
             session.beginTransaction();
             session.createNativeQuery(CREATE_TABLE).executeUpdate();

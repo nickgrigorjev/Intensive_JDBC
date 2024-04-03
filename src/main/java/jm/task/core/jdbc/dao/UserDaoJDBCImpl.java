@@ -41,11 +41,6 @@ public class UserDaoJDBCImpl implements UserDao {
             WHERE id = ?
             """;
 
-    public UserDaoJDBCImpl() {
-
-    }
-
-
     public void createUsersTable() {
         try (Connection connection = Util.connectionOpen();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TABLE)) {
