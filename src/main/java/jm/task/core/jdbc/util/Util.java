@@ -1,5 +1,11 @@
 package jm.task.core.jdbc.util;
 
+import jm.task.core.jdbc.model.User;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -42,6 +48,23 @@ public final class Util {
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static Session connectionOpenHibernate() {
+        try {
+            SessionFactory sessionFactory = new Configuration()
+                .setProperty("hibernate.connection.driver_class", "org.postgresql.Driver")
+                .setProperty("hibernate.connection.url", PROPERTIES.getProperty(URL_KEY))
+                .setProperty("hibernate.connection.username", PROPERTIES.getProperty(USERNAME_KEY))
+                .setProperty("hibernate.connection.password", PROPERTIES.getProperty(PASSWORD_KEY))
+                .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
+                .addAnnotatedClass(User.class)
+                .buildSessionFactory();
+            Session session = sessionFactory.openSession();
+            return session;
+        } catch (HibernateException e) {
+            throw new RuntimeException();
         }
     }
 }
